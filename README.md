@@ -1,4 +1,4 @@
 # CustomSaplings
 Custom Saplings plugin by Jsinco
 
-Spigot page: 
+Spigot page: https://www.spigotmc.org/resources/customsaplings.112659/
