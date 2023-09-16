@@ -9,3 +9,22 @@ commands:
   customsaplings:
     description: Custom Saplings Command
     aliases: [customsap, csap]
+permissions:
+  customsaplings.helpcommand:
+    description: Help command for Custom Saplings
+    default: op
+  customsaplings.reloadcommand:
+    description: Reload command for Custom Saplings
+    default: op
+  customsaplings.givecommand:
+    description: Give command for Custom Saplings
+    default: op
+  customsaplings.pastecommand:
+    description: Paste command for Custom Saplings
+    default: op
+  customsaplings.place:
+    description: Permission to place custom saplings
+    default: op
+  customsaplings.break:
+    description: Permission to break custom saplings
+    default: op

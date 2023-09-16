@@ -4,12 +4,10 @@ import me.jsinco.customsaplings.commands.CommandManager;
 import me.jsinco.customsaplings.listeners.Events;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// I can't believe there isn't a plugin for this on spigot : 9/15/2021
 public final class CustomSaplings extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }

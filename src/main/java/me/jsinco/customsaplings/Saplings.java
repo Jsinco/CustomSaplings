@@ -8,6 +8,8 @@ import me.jsinco.customsaplings.util.TextUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -31,6 +33,15 @@ public class Saplings {
             meta.setLore(TextUtils.colorArrayList(FileManager.getSaplingsFile(plugin).getStringList(saplingName + ".lore")));
             meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING, FileManager.getSaplingsFile(plugin).getString(saplingName + ".schematic"));
             meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING, saplingName);
+
+            if (FileManager.getSaplingsFile(plugin).get(saplingName + ".enchant-glint") != null && FileManager.getSaplingsFile(plugin).getBoolean(saplingName + ".enchant-glint")) {
+                meta.addEnchant(Enchantment.LUCK, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            if (FileManager.getSaplingsFile(plugin).get(saplingName + ".custom-model-data") != null) {
+                meta.setCustomModelData(FileManager.getSaplingsFile(plugin).getInt(saplingName + ".custom-model-data"));
+            }
+
             sapling.setItemMeta(meta);
             return sapling;
         } catch (NullPointerException e) {
@@ -50,8 +61,13 @@ public class Saplings {
     }
 
 
-    public static void setTree(String fileName, Block block) {
+    public static void setSchematic(String fileName, Block block) {
         File file = FileManager.getSchematicFile(plugin, fileName);
+        if (file == null || !file.exists()) {
+            plugin.getLogger().warning("Someone tried to set a schematic that does not exist! File: " + fileName + " Location: "+ block.getLocation());
+            return;
+        }
+
         ClipboardFormat format = ClipboardFormats.findByFile(file);
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             Clipboard clipboard = reader.read();

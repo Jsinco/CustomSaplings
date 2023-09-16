@@ -1,12 +1,27 @@
-# Sample:
+# -- Sample --
 #   my_sapling:
 #     material: OAK_SAPLING
 #     name: '&cMy Sapling'
 #     lore: ['&7This is my sapling.', '&7It is very special...']
+#     enchant-glint: false ## OPTIONAL
+#     custom-model-data: 1 ## OPTIONAL
 #     schematic: 'my_sapling.schem'
 
 cherrytree:
   material: CHERRY_SAPLING
-  name: '&cCherry Blossom &rSapling'
+  name: '&#a8ff92&lCherry Blossom &#E2E2E2Sapling'
   lore: []
   schematic: 'mushpeach_cherrytree.schem'
+
+graytree:
+  material: BIRCH_SAPLING
+  name: '&#a8ff92&lGray Tree &#E2E2E2Sapling'
+  lore: []
+  schematic: 'gray_tree.schem'
+
+maple_tree:
+  material: ACACIA_SAPLING
+  name: '&#a8ff92&lMaple &#E2E2E2Sapling'
+  lore: []
+  enchant-glint: true
+  schematic: 'maple_tree.schem'

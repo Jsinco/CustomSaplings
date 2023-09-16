@@ -1,9 +1,10 @@
 package me.jsinco.customsaplings.listeners;
 
 import me.jsinco.customsaplings.CustomSaplings;
-import me.jsinco.customsaplings.FileManager;
 import me.jsinco.customsaplings.Saplings;
+import me.jsinco.customsaplings.util.TextUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -17,7 +18,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.io.File;
 import java.util.List;
 
 public class Events implements Listener {
@@ -35,6 +35,13 @@ public class Events implements Listener {
         if (!item.hasItemMeta() || !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING)) {
             return; // Not a custom sapling
         }
+
+        if (plugin.getConfig().getBoolean("require-permission-to-place") && !event.getPlayer().hasPermission("customsaplings.place")) {
+            event.getPlayer().sendMessage(TextUtils.prefix + "You do not have permission to place this sapling!");
+            event.setCancelled(true);
+            return;
+        }
+
         String schematic = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING);
         String sapling = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING);
         event.getBlockPlaced().setMetadata("schematic", new FixedMetadataValue(plugin, schematic));
@@ -49,8 +56,9 @@ public class Events implements Listener {
             if (block.hasMetadata("schematic")) {
                 List<MetadataValue> metadataValues = block.getMetadata("schematic");
                 String schematic = metadataValues.get(0).asString();
-                Saplings.setTree(schematic, block.getBlock());
+                Saplings.setSchematic(schematic, block.getBlock());
 
+                block.getWorld().getBlockAt(block.getLocation()).setType(Material.AIR);
                 event.setCancelled(true);
                 break;
             }
@@ -64,6 +72,12 @@ public class Events implements Listener {
             return; // Not a custom sapling
         } else if (!plugin.getConfig().getBoolean("drop-sapling-item-on-break")) {
             return; // Drop sapling is disabled
+        }
+
+        if (plugin.getConfig().getBoolean("require-permission-to-break") && !event.getPlayer().hasPermission("customsaplings.break")) {
+            event.getPlayer().sendMessage(TextUtils.prefix + "You do not have permission to break this sapling!");
+            event.setCancelled(true);
+            return;
         }
 
         List<MetadataValue> metadataValues = block.getMetadata("sapling");

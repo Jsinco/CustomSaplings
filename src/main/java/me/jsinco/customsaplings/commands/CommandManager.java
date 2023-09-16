@@ -27,6 +27,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(TextUtils.prefix + "Custom Saplings v" + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors().get(0));
+            return true;
+        }
 
         args[0] = args[0].toLowerCase();
 
