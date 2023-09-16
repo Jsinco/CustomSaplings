@@ -18,20 +18,17 @@ public class GiveCommand implements SubCommand {
         if (!sender.hasPermission("customsaplings.givecommand")) {
             sender.sendMessage(TextUtils.prefix + "You do not have permission to use this command!");
             return;
-        }
-        if (args.length < 2) {
+        } else if (args.length < 2) {
             sender.sendMessage(TextUtils.prefix + "You must specify a sapling name!");
             return;
         }
 
         ItemStack sapling = Saplings.getSapling(args[1]);
+        Player deliverTo = args.length == 2 && sender instanceof Player ? (Player) sender : Bukkit.getPlayerExact(args[2]);
         if (sapling == null) {
             sender.sendMessage(TextUtils.prefix + "That sapling does not exist!");
             return;
-        }
-
-        Player deliverTo = args.length == 2 && sender instanceof Player ? (Player) sender : Bukkit.getPlayerExact(args[2]);
-        if (deliverTo == null) {
+        } else if (deliverTo == null) {
             sender.sendMessage(TextUtils.prefix + "That player is not online!");
             return;
         }
