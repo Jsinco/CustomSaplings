@@ -41,7 +41,9 @@ public class Schematic {
         EditSession session = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
 
         Operation operation = new ClipboardHolder(clipboard).createPaste(session)
-                .to(location.toVector().toBlockPoint()).ignoreAirBlocks(true).build();
+                .to(location.toVector().toBlockPoint())
+                .ignoreAirBlocks(true)
+                .build();
 
         try {
             Operations.complete(operation);
