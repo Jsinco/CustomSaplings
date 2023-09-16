@@ -19,9 +19,4 @@ public final class CustomSaplings extends JavaPlugin {
         getCommand("customsaplings").setExecutor(new CommandManager(this));
         getServer().getPluginManager().registerEvents(new Events(this), this);
     }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
 }
