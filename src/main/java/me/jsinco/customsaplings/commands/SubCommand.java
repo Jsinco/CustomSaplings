@@ -7,7 +7,20 @@ import java.util.List;
 
 public interface SubCommand {
 
+    /**
+     * Executes the subcommand
+     * @param plugin The plugin instance so each subcommand has an instance of the plugin
+     * @param sender The sender of the command
+     * @param args The arguments of the command
+     */
     void execute(CustomSaplings plugin, CommandSender sender, String[] args);
 
-    List<String> onTabComplete(CustomSaplings plugin, CommandSender commandSender, String[] args);
+    /**
+     * Allows subcommands to have tab completion
+     * @param plugin The plugin instance so each subcommand has an instance of the plugin
+     * @param commandSender The sender of the command
+     * @param args The arguments of the command
+     * @return A list of possible tab completions
+     */
+    List<String> tabComplete(CustomSaplings plugin, CommandSender commandSender, String[] args);
 }

@@ -2,3 +2,8 @@ name: CustomSaplings
 version: '${version}'
 main: me.jsinco.customsaplings.CustomSaplings
 api-version: '1.20'
+author: jsinco
+commands:
+  customsaplings:
+    description: Custom Saplings Command
+    aliases: [customsap]
