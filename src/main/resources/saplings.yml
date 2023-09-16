@@ -1,0 +1,12 @@
+# Sample:
+#   my_sapling:
+#     material: OAK_SAPLING
+#     name: '&cMy Sapling'
+#     lore: ['&7This is my sapling.', '&7It is very special...']
+#     schematic: 'my_sapling.schem'
+
+cherrytree:
+  material: CHERRY_SAPLING
+  name: '&cCherry Blossom &rSapling'
+  lore: []
+  schematic: 'mushpeach_cherrytree.schem'

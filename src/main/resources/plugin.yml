@@ -3,7 +3,9 @@ version: '${version}'
 main: me.jsinco.customsaplings.CustomSaplings
 api-version: '1.20'
 author: jsinco
+depend:
+  - WorldEdit
 commands:
   customsaplings:
     description: Custom Saplings Command
-    aliases: [customsap]
+    aliases: [customsap, csap]

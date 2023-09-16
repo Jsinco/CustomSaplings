@@ -1,6 +1,7 @@
 package me.jsinco.customsaplings.commands;
 
 import me.jsinco.customsaplings.CustomSaplings;
+import me.jsinco.customsaplings.util.TextUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +21,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         // Subcommands
         subCommands.put("help", new HelpCommand());
         subCommands.put("paste", new PasteCommand());
+        subCommands.put("give", new GiveCommand());
+        subCommands.put("reload", new ReloadCommand());
     }
 
     @Override
@@ -28,7 +31,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         args[0] = args[0].toLowerCase();
 
         if (!subCommands.containsKey(args[0])) {
-            sender.sendMessage("Unknown subcommand!");
+            sender.sendMessage(TextUtils.prefix + "Unknown subcommand!");
             subCommands.get("help").execute(plugin, sender, args);
             return true;
         }
