@@ -15,24 +15,24 @@ public class GiveCommand implements SubCommand {
 
     @Override
     public void execute(CustomSaplings plugin, CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player) || !player.hasPermission("customsaplings.givecommand")) {
-            sender.sendMessage("You do not have permission to use this command!");
+        if (!sender.hasPermission("customsaplings.givecommand")) {
+            sender.sendMessage(TextUtils.prefix + "You do not have permission to use this command!");
             return;
         }
         if (args.length < 2) {
-            player.sendMessage("You must specify a sapling name!");
+            sender.sendMessage(TextUtils.prefix + "You must specify a sapling name!");
             return;
         }
 
         ItemStack sapling = Saplings.getSapling(args[1]);
         if (sapling == null) {
-            player.sendMessage(TextUtils.prefix + "That sapling does not exist!");
+            sender.sendMessage(TextUtils.prefix + "That sapling does not exist!");
             return;
         }
 
-        Player deliverTo = args.length == 3 ? Bukkit.getPlayerExact(args[2]) : player;
+        Player deliverTo = args.length == 2 && sender instanceof Player ? (Player) sender : Bukkit.getPlayerExact(args[2]);
         if (deliverTo == null) {
-            player.sendMessage(TextUtils.prefix + "That player is not online!");
+            sender.sendMessage(TextUtils.prefix + "That player is not online!");
             return;
         }
 
@@ -41,17 +41,20 @@ public class GiveCommand implements SubCommand {
                 deliverTo.getInventory().addItem(sapling);
                 break;
             } else if (i == 35) {
-                deliverTo.getWorld().dropItem(player.getLocation(), sapling);
+                deliverTo.getWorld().dropItem(deliverTo.getLocation(), sapling);
             }
         }
 
-        if (!deliverTo.equals(player)) {
-            player.sendMessage(TextUtils.prefix + deliverTo.getName() + " was given a: " + args[1] + " sapling");
+        if (args.length > 2) {
+            sender.sendMessage(TextUtils.prefix + deliverTo.getName() + " was given a " + args[1] + " sapling");
         }
     }
 
     @Override
     public List<String> tabComplete(CustomSaplings plugin, CommandSender commandSender, String[] args) {
-        return List.copyOf(FileManager.getSaplingsFile(plugin).getKeys(false));
+        if (args.length == 2) {
+            return List.copyOf(FileManager.getSaplingsFile(plugin).getKeys(false));
+        }
+        return null;
     }
 }

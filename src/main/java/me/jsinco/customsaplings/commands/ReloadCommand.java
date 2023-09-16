@@ -12,7 +12,7 @@ public class ReloadCommand implements SubCommand {
     @Override
     public void execute(CustomSaplings plugin, CommandSender sender, String[] args) {
         if (!sender.hasPermission("customsaplings.reloadcommand")) {
-            sender.sendMessage("You do not have permission to use this command!");
+            sender.sendMessage(TextUtils.prefix + "You do not have permission to use this command!");
             return;
         }
         if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdir();
