@@ -22,17 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 
-public class Schematic {
-
-    private final Clipboard clipboard;
-
-    public Schematic(Clipboard clipboard) {
-        this.clipboard = clipboard;
-    }
-
-    public Clipboard getClipboard() {
-        return clipboard;
-    }
+public record Schematic(Clipboard clipboard) {
 
     public void paste(org.bukkit.Location target) {
         World world = BukkitAdapter.adapt(target.getWorld());
