@@ -1,3 +1,7 @@
+# NOTE:
+# How trees grow is based on where you take your schematic. If you are using world edit
+# Stand on the block you want the tree to grow from then use //copy
+
 # -- Sample --
 #   my_sapling:
 #     material: OAK_SAPLING
@@ -6,7 +10,6 @@
 #     enchant-glint: false ## OPTIONAL
 #     custom-model-data: 1 ## OPTIONAL
 #     schematic: 'my_sapling.schem'
-
 cherrytree:
   material: CHERRY_SAPLING
   name: '&#a8ff92&lCherry Blossom &#E2E2E2Sapling'
