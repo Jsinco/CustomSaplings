@@ -37,7 +37,7 @@ public class FileManager {
      * Loads the default schematics from the jar file
      */
     public void loadDefaultSchematics() {
-        String[] defaultSchematics = {"gray_tree.schem", "maple_tree.schem", "mushpeach_cherrytree.schem"};
+        String[] defaultSchematics = {"gray_tree.schem", "maple_tree.schem", "mushpeach_cherrytree.schem", "bigtree.schem"};
         for (String fileName : defaultSchematics) {
             File file = new File(plugin.getDataFolder(), "Schematics" + File.separator + fileName);
             try {

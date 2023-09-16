@@ -16,6 +16,7 @@ public class HelpCommand implements SubCommand {
         }
 
         String helpMessage = TextUtils.colorcode("""
+                &#a8ff92Command aliases: &#E2E2E2/customsap, /csap
                 &#a8ff92/customsaplings help &#E2E2E2- Displays this help message
                 &#a8ff92/customsaplings paste &#E2E2E2- Pastes a schematic at the block you are looking at
                 &#a8ff92/customsaplings give <?player> &#E2E2E2- Gives you a custom sapling ? gives to another player if specified

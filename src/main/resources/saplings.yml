@@ -28,3 +28,9 @@ maple_tree:
   lore: []
   enchant-glint: true
   schematic: 'maple_tree.schem'
+
+bigtree:
+  material: JUNGLE_SAPLING
+  name: '&#a8ff92&lBig Tree &#E2E2E2Sapling'
+  lore: ['&7This is one big tree!']
+  schematic: 'bigtree.schem'
