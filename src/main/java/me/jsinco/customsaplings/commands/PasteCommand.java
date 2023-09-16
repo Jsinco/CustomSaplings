@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PasteCommand implements SubCommand  {
 
-    @Override // TODO: cleanup and fixing
+    @Override
     public void execute(CustomSaplings plugin, CommandSender sender, String[] args) {
         if (!(sender instanceof Player player) || !player.hasPermission("customsaplings.pastecommand")) {
             sender.sendMessage(TextUtils.prefix + "You do not have permission to use this command!");
