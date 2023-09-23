@@ -9,17 +9,20 @@
 #     lore: ['&7This is my sapling.', '&7It is very special...']
 #     enchant-glint: false ## OPTIONAL
 #     custom-model-data: 1 ## OPTIONAL
+#     rarity-box: common ## OPTIONAL (What rarity box you want the sapling to be apart of)
 #     schematic: 'my_sapling.schem'
 cherrytree:
   material: CHERRY_SAPLING
   name: '&#a8ff92&lCherry Blossom &#E2E2E2Sapling'
   lore: []
+  rarity-box: common
   schematic: 'mushpeach_cherrytree.schem'
 
 graytree:
   material: BIRCH_SAPLING
   name: '&#a8ff92&lGray Tree &#E2E2E2Sapling'
   lore: []
+  rarity-box: uncommon
   schematic: 'gray_tree.schem'
 
 maple_tree:
@@ -27,10 +30,12 @@ maple_tree:
   name: '&#a8ff92&lMaple &#E2E2E2Sapling'
   lore: []
   enchant-glint: true
+  rarity-box: uncommon
   schematic: 'maple_tree.schem'
 
 bigtree:
   material: JUNGLE_SAPLING
   name: '&#a8ff92&lBig Tree &#E2E2E2Sapling'
   lore: ['&7This is one big tree!']
+  rarity-box: rare
   schematic: 'bigtree.schem'

@@ -18,9 +18,9 @@ public interface SubCommand {
     /**
      * Allows subcommands to have tab completion
      * @param plugin The plugin instance so each subcommand has an instance of the plugin
-     * @param commandSender The sender of the command
+     * @param sender The sender of the command
      * @param args The arguments of the command
      * @return A list of possible tab completions
      */
-    List<String> tabComplete(CustomSaplings plugin, CommandSender commandSender, String[] args);
+    List<String> tabComplete(CustomSaplings plugin, CommandSender sender, String[] args);
 }

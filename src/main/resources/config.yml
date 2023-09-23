@@ -15,3 +15,29 @@ require-permission-to-place: false
 # Should players require permission to break custom saplings?
 # Permission: customsaplings.break
 require-permission-to-break: false
+
+# example-rarity:
+#   material: PLAYER_HEAD
+#   data: BoxMan01234 ## OPTIONAL Should be a player name or custom model data if not using a player head
+#   name: '&#a8ff92&lExample Rarity Box'
+#   lore: []
+#   enchant-glint: true ## OPTIONAL
+#   open-sound: ENTITY_PLAYER_LEVELUP ## OPTIONAL (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+rarity-boxes:
+  common:
+    material: PLAYER_HEAD
+    data: BoxMan01234
+    name: '&#a8ff92&lCommon Sapling Box'
+    lore: []
+
+  uncommon:
+    material: PLAYER_HEAD
+    data: BoxMan01234
+    name: '&#a8ff92&lUncommon Sapling Box'
+    lore: []
+
+  rare:
+    material: PLAYER_HEAD
+    data: BoxMan01234
+    name: '&#a8ff92&lRare Sapling Box'
+    lore: []

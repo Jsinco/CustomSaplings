@@ -61,6 +61,12 @@ public class Saplings {
     }
 
 
+    public static List<String> getAllSaplingsOfRarity(String rarity) {
+        List<String> saplingNames = new ArrayList<>(FileManager.getSaplingsFile(plugin).getKeys(false).stream().toList());
+        saplingNames.removeIf(saplingName -> FileManager.getSaplingsFile(plugin).getString(saplingName + ".rarity-box") != null && !FileManager.getSaplingsFile(plugin).getString(saplingName + ".rarity-box").equalsIgnoreCase(rarity));
+        return saplingNames;
+    }
+
     public static void setSchematic(String fileName, Block block) {
         File file = FileManager.getSchematicFile(plugin, fileName);
         if (file == null || !file.exists()) {

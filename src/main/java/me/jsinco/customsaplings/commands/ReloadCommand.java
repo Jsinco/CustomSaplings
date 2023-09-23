@@ -26,7 +26,7 @@ public class ReloadCommand implements SubCommand {
     }
 
     @Override
-    public List<String> tabComplete(CustomSaplings plugin, CommandSender commandSender, String[] args) {
+    public List<String> tabComplete(CustomSaplings plugin, CommandSender sender, String[] args) {
         return null;
     }
 }

@@ -30,7 +30,7 @@ public class PasteCommand implements SubCommand  {
     }
 
     @Override
-    public List<String> tabComplete(CustomSaplings plugin, CommandSender commandSender, String[] args) {
+    public List<String> tabComplete(CustomSaplings plugin, CommandSender sender, String[] args) {
         return null; // TODO: Make this return a list of schematic file names
     }
 }

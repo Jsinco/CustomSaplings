@@ -23,6 +23,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         subCommands.put("paste", new PasteCommand());
         subCommands.put("give", new GiveCommand());
         subCommands.put("reload", new ReloadCommand());
+        subCommands.put("box", new BoxCommand());
     }
 
     @Override

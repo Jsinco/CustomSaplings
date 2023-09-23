@@ -1,5 +1,6 @@
 package me.jsinco.customsaplings;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -113,8 +114,9 @@ public class FileManager {
     // TODO: Should this be a method
     public void loadDefaultConfig(boolean reload) {
         if (!reload) {
-            plugin.getConfig().options().copyDefaults();
+            plugin.getConfig().options().copyDefaults(true);
             plugin.saveDefaultConfig();
+
         } else {
             plugin.reloadConfig();
         }

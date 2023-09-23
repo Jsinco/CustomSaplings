@@ -3,15 +3,19 @@ package me.jsinco.customsaplings.listeners;
 import me.jsinco.customsaplings.CustomSaplings;
 import me.jsinco.customsaplings.Saplings;
 import me.jsinco.customsaplings.util.TextUtils;
+import me.jsinco.customsaplings.util.Utility;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -19,6 +23,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
+import java.util.Random;
 
 public class Events implements Listener {
 
@@ -84,6 +89,30 @@ public class Events implements Listener {
         ItemStack sapling = Saplings.getSapling(metadataValues.get(0).asString());
         if (sapling != null) {
             block.getWorld().dropItemNaturally(block.getLocation(), sapling);
+        }
+    }
+
+    @EventHandler // For custom sapling boxes
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+
+
+        if (event.getItem() == null || !event.getItem().hasItemMeta() || !event.getItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "box"), PersistentDataType.STRING)) {
+            return; // Not a custom sapling box
+        }
+
+        String rarity = event.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "box"), PersistentDataType.STRING);
+        List<String> saplings = Saplings.getAllSaplingsOfRarity(rarity);
+        if (saplings.isEmpty()) {
+            event.getPlayer().sendMessage(TextUtils.prefix + "There are no saplings in this box!");
+        } else {
+            event.getItem().setAmount(event.getItem().getAmount() - 1);
+            String sapling = saplings.get(new Random().nextInt(saplings.size()));
+            Utility.giveItem(event.getPlayer(), Saplings.getSapling(sapling));
+
+            if (plugin.getConfig().get("rarity-boxes." + rarity + ".open-sound") != null) {
+                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf(plugin.getConfig().getString("rarity-boxes." + rarity + ".open-sound")), 1, 1);
+            }
         }
     }
 }
