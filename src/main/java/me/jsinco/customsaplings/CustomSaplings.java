@@ -23,6 +23,10 @@ public final class CustomSaplings extends JavaPlugin {
         YamlConfiguration rawConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
         if (rawConfig.get("version") == null || !rawConfig.getString("version").equals(getDescription().getVersion())) {
             fileManager.updateFile("config.yml"); // Update config.yml if it's outdated
+            fileManager.updateFile("saplings.yml");
+
+            getConfig().set("version", getDescription().getVersion());
+            saveConfig();
             Util.log("&dUpdated config.yml to version " + getDescription().getVersion());
         }
 

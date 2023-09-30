@@ -59,12 +59,14 @@ public class Events implements Listener {
 
         for (BlockState block : blocks) {
             if (block.hasMetadata("schematic")) {
+                Block cloneBlock = block.getBlock();
                 List<MetadataValue> metadataValues = block.getMetadata("schematic");
                 String schematic = metadataValues.get(0).asString();
-                Saplings.setSchematic(schematic, block.getBlock());
-
                 block.getWorld().getBlockAt(block.getLocation()).setType(Material.AIR);
+
+                Saplings.setSchematic(schematic, cloneBlock);
                 event.setCancelled(true);
+
                 Util.log("&aA " + schematic + " tree has grown!");
                 break;
             }
