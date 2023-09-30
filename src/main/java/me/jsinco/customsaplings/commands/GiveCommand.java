@@ -4,7 +4,7 @@ import me.jsinco.customsaplings.CustomSaplings;
 import me.jsinco.customsaplings.FileManager;
 import me.jsinco.customsaplings.Saplings;
 import me.jsinco.customsaplings.util.TextUtils;
-import me.jsinco.customsaplings.util.Utility;
+import me.jsinco.customsaplings.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public class GiveCommand implements SubCommand {
             return;
         }
 
-        Utility.giveItem(deliverTo, sapling);
+        Util.giveItem(deliverTo, sapling);
         if (args.length > 2) {
             sender.sendMessage(TextUtils.prefix + deliverTo.getName() + " was given a " + args[1] + " sapling");
         }

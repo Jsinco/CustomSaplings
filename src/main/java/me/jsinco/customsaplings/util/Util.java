@@ -1,9 +1,13 @@
 package me.jsinco.customsaplings.util;
 
+import me.jsinco.customsaplings.CustomSaplings;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class Utility {
+public class Util {
+
+    private final static CustomSaplings plugin = CustomSaplings.getPlugin(CustomSaplings.class);
 
     public static void giveItem(Player player, ItemStack item) {
         for (int i = 0; i < 36; i++) {
@@ -15,5 +19,11 @@ public class Utility {
             }
         }
 
+    }
+
+    public static void log(String msg) {
+        if (plugin.getConfig().getBoolean("verbose-logging")) {
+            Bukkit.getConsoleSender().sendMessage(TextUtils.colorcode(plugin.getConfig().getString("prefix") + msg));
+        }
     }
 }

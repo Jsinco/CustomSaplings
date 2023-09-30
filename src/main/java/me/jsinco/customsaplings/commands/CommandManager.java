@@ -2,6 +2,7 @@ package me.jsinco.customsaplings.commands;
 
 import me.jsinco.customsaplings.CustomSaplings;
 import me.jsinco.customsaplings.util.TextUtils;
+import me.jsinco.customsaplings.util.Util;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,12 +30,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
+            Util.log("&a" + sender.getName() + " executed /" + command.getName());
             sender.sendMessage(TextUtils.prefix + "Custom Saplings v" + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors().get(0));
             return true;
         }
 
         args[0] = args[0].toLowerCase();
-
+        Util.log("&a" + sender.getName() + " executed /" + command.getName() + String.join(" ", args));
         if (!subCommands.containsKey(args[0])) {
             sender.sendMessage(TextUtils.prefix + "Unknown subcommand!");
             subCommands.get("help").execute(plugin, sender, args);

@@ -38,7 +38,7 @@ public record Schematic(Clipboard clipboard) {
         try {
             Operations.complete(operation);
 
-            session.flushSession();
+            session.close();
         } catch (WorldEditException exception) {
             exception.printStackTrace();
         }

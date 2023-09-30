@@ -1,6 +1,6 @@
 package me.jsinco.customsaplings;
 
-import org.bukkit.configuration.Configuration;
+import me.jsinco.customsaplings.configupdater.ConfigUpdater;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 public class FileManager {
 
@@ -71,7 +72,21 @@ public class FileManager {
     public static File getSchematicFile(CustomSaplings plugin, String schematicName) {
         File schemFile = new File(plugin.getDataFolder(), "Schematics" + File.separator + schematicName);
         if (!schemFile.exists()) {
-            plugin.getLogger().warning("Schematic file " + schematicName + " does not exist!");
+            return null;
+        }
+        return schemFile;
+    }
+
+
+    public static File getSchematicFileFromWE(CustomSaplings plugin, String schematicName) {
+        String filePath;
+        if (new File(plugin.getDataFolder().getParent() + File.separator + "WorldEdit").exists()) {
+            filePath = plugin.getDataFolder().getParent() + File.separator + "WorldEdit" + File.separator + "schematics" + File.separator + schematicName;
+        } else {
+            filePath = plugin.getDataFolder().getParent() + File.separator + "FastAsyncWorldEdit" + File.separator + "schematics" + File.separator + schematicName;
+        }
+        File schemFile = new File(filePath);
+        if (!schemFile.exists()) {
             return null;
         }
         return schemFile;
@@ -111,7 +126,21 @@ public class FileManager {
     }
 
 
-    // TODO: Should this be a method
+    public boolean updateFile(String fileName) {
+        File file = new File(plugin.getDataFolder(), fileName);
+        if (!file.exists()) return false;
+        try {
+            ConfigUpdater.update(plugin, fileName, file, List.of());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+
+    // TODO: Should this be a method?
     public void loadDefaultConfig(boolean reload) {
         if (!reload) {
             plugin.getConfig().options().copyDefaults(true);

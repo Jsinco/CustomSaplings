@@ -1,8 +1,9 @@
-# NOTE:
-# How trees grow is based on where you take your schematic. If you are using world edit
-# Stand on the block you want the tree to grow from then use //copy
+# Please do not modify this
+version: 1.0.2
 
-# Prefix used plugin messages
+
+
+# Prefix used in plugin messages
 prefix: '&#9ad36e&lC&#9ad671&lu&#99d974&ls&#99dd77&lt&#99e07a&lo&#98e37d&lm&#98e680&lS&#98ea82&la&#98ed85&lp&#97f088&ll&#97f38b&li&#97f78e&ln&#96fa91&lg&#96fd94&ls &r&8»&#E2E2E2 '
 
 # If saplings should drop their item when broken
@@ -15,6 +16,14 @@ require-permission-to-place: false
 # Should players require permission to break custom saplings?
 # Permission: customsaplings.break
 require-permission-to-break: false
+
+# If a schematic file does not exist in the schematics folder, should we check FAWE/WorldEdit's schematics folder for it?
+search-worldedit-schematics-folder: true
+
+# Show logs in console for when the plugin does something, usually you can just leave this off
+verbose-logging: false
+
+
 
 # example-rarity:
 #   material: PLAYER_HEAD

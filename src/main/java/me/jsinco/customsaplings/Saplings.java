@@ -5,6 +5,7 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import me.jsinco.customsaplings.util.TextUtils;
+import me.jsinco.customsaplings.util.Util;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -69,8 +70,12 @@ public class Saplings {
 
     public static void setSchematic(String fileName, Block block) {
         File file = FileManager.getSchematicFile(plugin, fileName);
-        if (file == null || !file.exists()) {
-            plugin.getLogger().warning("Someone tried to set a schematic that does not exist! File: " + fileName + " Location: "+ block.getLocation());
+        if (file == null && plugin.getConfig().getBoolean("search-worldedit-schematics-folder")) {
+            Util.log("&aCould not find schematic file " + fileName + " in the plugin folder, searching WorldEdit/FAWE schematics folder...");
+            file = FileManager.getSchematicFileFromWE(plugin, fileName);
+        }
+        if (file == null) {
+            Util.log("&eSomeone tried to set a schematic that does not exist! File: " + fileName + " Location: "+ block.getLocation());
             return;
         }
 
