@@ -30,13 +30,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
-            Util.log("&a" + sender.getName() + " executed /" + command.getName());
+            Util.log("&a" + sender.getName() + " executed /customsaplings");
             sender.sendMessage(TextUtils.prefix + "Custom Saplings v" + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors().get(0));
             return true;
         }
 
         args[0] = args[0].toLowerCase();
-        Util.log("&a" + sender.getName() + " executed /" + command.getName() + String.join(" ", args));
+        Util.log("&a" + sender.getName() + " executed /customsaplings " + String.join(" ", args));
         if (!subCommands.containsKey(args[0])) {
             sender.sendMessage(TextUtils.prefix + "Unknown subcommand!");
             subCommands.get("help").execute(plugin, sender, args);
