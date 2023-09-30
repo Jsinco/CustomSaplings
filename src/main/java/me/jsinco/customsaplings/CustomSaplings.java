@@ -25,7 +25,7 @@ public final class CustomSaplings extends JavaPlugin {
             fileManager.updateFile("config.yml"); // Update config.yml if it's outdated
 
             getConfig().set("version", getDescription().getVersion());
-            saveConfig();
+            saveConfig(); // Save the config.yml
             Util.log("&dUpdated config.yml to version " + getDescription().getVersion());
         }
 
