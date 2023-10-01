@@ -25,6 +25,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         subCommands.put("give", new GiveCommand());
         subCommands.put("reload", new ReloadCommand());
         subCommands.put("box", new BoxCommand());
+        subCommands.put("verbose", new VerboseCommand());
     }
 
     @Override
@@ -51,6 +52,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("customsaplings.tabcomplete")) {
+            return null;
+        }
         if (args.length == 1) {
             return subCommands.keySet().stream().toList();
         }

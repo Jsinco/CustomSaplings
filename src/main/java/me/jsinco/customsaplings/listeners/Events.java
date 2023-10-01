@@ -62,7 +62,9 @@ public class Events implements Listener {
                 Block cloneBlock = block.getBlock();
                 List<MetadataValue> metadataValues = block.getMetadata("schematic");
                 String schematic = metadataValues.get(0).asString();
-                block.getWorld().getBlockAt(block.getLocation()).setType(Material.AIR);
+                cloneBlock.removeMetadata("schematic", plugin);
+                cloneBlock.removeMetadata("sapling", plugin);
+                cloneBlock.setType(Material.AIR);
 
                 Saplings.setSchematic(schematic, cloneBlock);
                 event.setCancelled(true);
@@ -81,6 +83,14 @@ public class Events implements Listener {
         } else if (!plugin.getConfig().getBoolean("drop-sapling-item-on-break")) {
             return; // Drop sapling is disabled
         }
+        List<MetadataValue> metadataValues = block.getMetadata("sapling");
+        ItemStack sapling = Saplings.getSapling(metadataValues.get(0).asString());
+        if (sapling == null) return;
+        if (!block.getType().equals(sapling.getType())) {
+            block.removeMetadata("sapling", plugin);
+            block.removeMetadata("schematic", plugin);
+            return; // Bug fix
+        }
 
         if (plugin.getConfig().getBoolean("require-permission-to-break") && !event.getPlayer().hasPermission("customsaplings.break")) {
             event.getPlayer().sendMessage(TextUtils.prefix + "You do not have permission to break this sapling!");
@@ -89,12 +99,9 @@ public class Events implements Listener {
             return;
         }
 
-        List<MetadataValue> metadataValues = block.getMetadata("sapling");
-        ItemStack sapling = Saplings.getSapling(metadataValues.get(0).asString());
-        if (sapling != null) {
-            block.getWorld().dropItemNaturally(block.getLocation(), sapling);
-            Util.log("&a" + event.getPlayer().getName() + " broke a " + metadataValues.get(0).asString() + " sapling!");
-        }
+        block.getWorld().dropItemNaturally(block.getLocation(), sapling);
+        Util.log("&a" + event.getPlayer().getName() + " broke a " + metadataValues.get(0).asString() + " sapling!");
+
     }
 
     @EventHandler // For custom sapling boxes
@@ -121,5 +128,7 @@ public class Events implements Listener {
                 event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf(plugin.getConfig().getString("rarity-boxes." + rarity + ".open-sound")), 1, 1);
             }
         }
+        event.setCancelled(true);
     }
+
 }

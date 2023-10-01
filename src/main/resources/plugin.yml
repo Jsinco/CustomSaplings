@@ -27,3 +27,6 @@ permissions:
   customsaplings.break:
     description: Permission to break custom saplings
     default: op
+  customsaplings.tabcomplete:
+    description: Permission to use tab complete for custom saplings
+    default: op

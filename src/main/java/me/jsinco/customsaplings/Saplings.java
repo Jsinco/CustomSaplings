@@ -64,14 +64,20 @@ public class Saplings {
 
     public static List<String> getAllSaplingsOfRarity(String rarity) {
         List<String> saplingNames = new ArrayList<>(FileManager.getSaplingsFile(plugin).getKeys(false).stream().toList());
-        saplingNames.removeIf(saplingName -> FileManager.getSaplingsFile(plugin).getString(saplingName + ".rarity-box") != null && !FileManager.getSaplingsFile(plugin).getString(saplingName + ".rarity-box").equalsIgnoreCase(rarity));
-        return saplingNames;
+        List<String> returnSaplings = new ArrayList<>();
+        for (String saplingName : saplingNames) {
+            if (FileManager.getSaplingsFile(plugin).getString(saplingName + ".rarity-box") == null) continue;
+            if (FileManager.getSaplingsFile(plugin).getString(saplingName + ".rarity-box").equalsIgnoreCase(rarity)) {
+                returnSaplings.add(saplingName);
+            }
+        }
+        return returnSaplings;
     }
 
     public static void setSchematic(String fileName, Block block) {
         File file = FileManager.getSchematicFile(plugin, fileName);
         if (file == null && plugin.getConfig().getBoolean("search-worldedit-schematics-folder")) {
-            Util.log("&aCould not find schematic file " + fileName + " in the plugin folder, searching WorldEdit/FAWE schematics folder...");
+            Util.log("&dCould not find schematic file " + fileName + " in the plugin folder, searching WorldEdit/FAWE schematics folder...");
             file = FileManager.getSchematicFileFromWE(plugin, fileName);
         }
         if (file == null) {
