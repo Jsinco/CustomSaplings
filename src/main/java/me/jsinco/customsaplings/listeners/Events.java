@@ -86,10 +86,10 @@ public class Events implements Listener {
         List<MetadataValue> metadataValues = block.getMetadata("sapling");
         ItemStack sapling = Saplings.getSapling(metadataValues.get(0).asString());
         if (sapling == null) return;
-        if (!block.getType().equals(sapling.getType())) {
+        else if (!block.getType().equals(sapling.getType())) {
             block.removeMetadata("sapling", plugin);
             block.removeMetadata("schematic", plugin);
-            return; // Bug fix
+            return; // Should never happen, but to prevent any possible exploits
         }
 
         if (plugin.getConfig().getBoolean("require-permission-to-break") && !event.getPlayer().hasPermission("customsaplings.break")) {
