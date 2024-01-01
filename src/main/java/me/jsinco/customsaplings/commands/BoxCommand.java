@@ -1,7 +1,11 @@
 package me.jsinco.customsaplings.commands;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import me.jsinco.customsaplings.CustomSaplings;
 import me.jsinco.customsaplings.util.TextUtils;
+import me.jsinco.customsaplings.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -14,12 +18,15 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
+import java.util.UUID;
+
 
 public class BoxCommand implements SubCommand {
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute(CustomSaplings plugin, CommandSender sender, String[] args) {
-        if (!sender.hasPermission("customsaplings.boxcommand") || !(sender instanceof Player player)) {
+        if (!sender.hasPermission("customsaplings.boxcommand")) {
             sender.sendMessage(TextUtils.prefix + "You do not have permission to use this command!");
             return;
         } else if (args.length < 2) {
@@ -34,7 +41,10 @@ public class BoxCommand implements SubCommand {
 
             String data = plugin.getConfig().getString("rarity-boxes." + boxName + ".data");
             if (data != null) {
-                skullMeta.setOwner(data);
+                skullMeta.setPlayerProfile(Bukkit.createProfile(UUID.fromString("cd7ccaf6-566e-4aa8-8fed-eab08c4916e8"), null));
+                PlayerProfile profile = skullMeta.getPlayerProfile();
+                profile.getProperties().add(new ProfileProperty("textures", data));
+                skullMeta.setPlayerProfile(profile);
             }
             if (plugin.getConfig().get("rarity-boxes." + boxName + ".enchant-glint") != null && plugin.getConfig().getBoolean("rarity-boxes." + boxName + ".enchant-glint")) {
                 skullMeta.addEnchant(Enchantment.LUCK, 1, true);
@@ -62,7 +72,12 @@ public class BoxCommand implements SubCommand {
             boxItem.setItemMeta(meta);
         }
 
-        player.getInventory().addItem(boxItem);
+        if (args.length > 2) {
+            Player target = Bukkit.getPlayerExact(args[2]);
+            Util.giveItem(target, boxItem);
+        } else {
+            Util.giveItem((Player) sender, boxItem);
+        }
     }
 
     @Override

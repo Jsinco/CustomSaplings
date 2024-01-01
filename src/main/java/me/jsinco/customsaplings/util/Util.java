@@ -36,7 +36,6 @@ public class Util {
                 player.getWorld().dropItem(player.getLocation(), item);
             }
         }
-
     }
 
     public static void log(String msg) {
