@@ -98,7 +98,7 @@ public class Events implements Listener {
             event.setCancelled(true);
             return;
         }
-
+        event.setDropItems(false);
         block.getWorld().dropItemNaturally(block.getLocation(), sapling);
         Util.log("&a" + event.getPlayer().getName() + " broke a " + metadataValues.get(0).asString() + " sapling!");
 
