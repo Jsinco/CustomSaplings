@@ -10,6 +10,8 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.mask.BlockMask;
+import com.sk89q.worldedit.function.mask.RegionMask;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
@@ -25,20 +27,19 @@ import java.util.Optional;
 public record Schematic(Clipboard clipboard) {
 
     public void paste(org.bukkit.Location target) {
+        if (target.getWorld() == null) {
+            throw new IllegalArgumentException("Target world for pasting a schematic cannot be null!");
+        }
         World world = BukkitAdapter.adapt(target.getWorld());
         Location location = BukkitAdapter.adapt(target);
 
-        EditSession session = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
+        try (EditSession session = WorldEdit.getInstance().newEditSession(world)) {
+            Operation operation = new ClipboardHolder(clipboard).createPaste(session)
+                    .to(location.toVector().toBlockPoint())
+                    .ignoreAirBlocks(true)
+                    .build();
 
-        Operation operation = new ClipboardHolder(clipboard).createPaste(session)
-                .to(location.toVector().toBlockPoint())
-                .ignoreAirBlocks(true)
-                .build();
-
-        try {
             Operations.complete(operation);
-
-            session.close();
         } catch (WorldEditException exception) {
             exception.printStackTrace();
         }
