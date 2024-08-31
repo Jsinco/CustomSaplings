@@ -10,7 +10,7 @@
 #     enchant-glint: false ## OPTIONAL
 #     custom-model-data: 1 ## OPTIONAL
 #     rarity-box: common ## OPTIONAL (What rarity box you want the sapling to be apart of)
-#     schematic: 'my_sapling.schem'
+#     schematic: 'my_sapling.schem' OR ['my_sapling.schem', 'my_sapling2.schem'] ## OPTIONAL (You can define multiple schematics for a single sapling! When placed, a random schematic will be chosen.)
 cherrytree:
   material: CHERRY_SAPLING
   name: '&#a8ff92&lCherry Blossom &#E2E2E2Sapling'
@@ -39,3 +39,14 @@ bigtree:
   lore: ['&7This is one big tree!']
   rarity-box: rare
   schematic: 'bigtree.schem'
+
+random_tree:
+  material: OAK_SAPLING
+  name: '&#a8ff92&lRandom Tree &#E2E2E2Sapling'
+  lore: ['&7This is one big tree!']
+  rarity-box: rare
+  schematic: # You can define multiple schematics for a single sapling! When placed, a random schematic will be chosen.
+    - 'bigtree.schem'
+    - 'maple_tree.schem'
+    - 'gray_tree.schem'
+    - 'mushpeach_cherrytree.schem'

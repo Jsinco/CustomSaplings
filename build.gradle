@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'me.jsinco'
-version = '1.1.0'
+version = '1.1.1'
 
 repositories {
     mavenCentral()
@@ -24,6 +24,7 @@ repositories {
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
     compileOnly "com.sk89q.worldedit:worldedit-bukkit:7.2.9"
+    implementation "org.jetbrains:annotations:24.0.0"
 }
 
 def targetJavaVersion = 17

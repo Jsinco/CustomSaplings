@@ -10,8 +10,11 @@ import java.io.File;
 
 public final class CustomSaplings extends JavaPlugin {
 
+    private static CustomSaplings instance;
+
     @Override
     public void onEnable() {
+        instance = this;
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
@@ -21,7 +24,7 @@ public final class CustomSaplings extends JavaPlugin {
         fileManager.loadDefaultConfig(false);
 
         YamlConfiguration rawConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        if (rawConfig.get("version") == null || !rawConfig.getString("version").equals(getDescription().getVersion())) {
+        if (rawConfig.get("version") == null || !getDescription().getVersion().equals(rawConfig.getString("version"))) {
             fileManager.updateFile("config.yml"); // Update config.yml if it's outdated
 
             getConfig().set("version", getDescription().getVersion());
@@ -38,5 +41,9 @@ public final class CustomSaplings extends JavaPlugin {
     @Override
     public void onDisable() {
         Util.log("&aDisabled Custom Saplings v" + getDescription().getVersion());
+    }
+
+    public static CustomSaplings getInstance() {
+        return instance;
     }
 }

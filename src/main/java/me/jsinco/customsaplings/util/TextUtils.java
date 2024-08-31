@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextUtils {
-    private static final CustomSaplings plugin = CustomSaplings.getPlugin(CustomSaplings.class);
+    private static final CustomSaplings plugin = CustomSaplings.getInstance()
     public static final String WITH_DELIMITER = "((?<=%1$s)|(?=%1$s))";
 
-    public static String prefix = colorcode(plugin.getConfig().getString("prefix"));;
+    public static String prefix = colorcode(plugin.getConfig().getString("prefix", "&#9ad36e&lC&#9ad671&lu&#99d974&ls&#99dd77&lt&#99e07a&lo&#98e37d&lm&#98e680&lS&#98ea82&la&#98ed85&lp&#97f088&ll&#97f38b&li&#97f78e&ln&#96fa91&lg&#96fd94&ls &r&8»&#E2E2E2 "));
 
     public static void reloadTextUtils() {
-        prefix = colorcode(plugin.getConfig().getString("prefix"));
+        prefix = colorcode(plugin.getConfig().getString("prefix", "&#9ad36e&lC&#9ad671&lu&#99d974&ls&#99dd77&lt&#99e07a&lo&#98e37d&lm&#98e680&lS&#98ea82&la&#98ed85&lp&#97f088&ll&#97f38b&li&#97f78e&ln&#96fa91&lg&#96fd94&ls &r&8»&#E2E2E2 "));
     }
 
     /**

@@ -50,7 +50,7 @@ public class Events implements Listener {
         String sapling = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING);
         event.getBlockPlaced().setMetadata("schematic", new FixedMetadataValue(plugin, schematic));
         event.getBlockPlaced().setMetadata("sapling", new FixedMetadataValue(plugin, sapling));
-        Util.log("&a" + event.getPlayer().getName() + " placed a " + sapling + " sapling!");
+        Util.debugLog("&a" + event.getPlayer().getName() + " placed a " + sapling + " sapling!");
     }
 
     @EventHandler (ignoreCancelled = true)
@@ -58,20 +58,21 @@ public class Events implements Listener {
         List<BlockState> blocks = event.getBlocks();
 
         for (BlockState block : blocks) {
-            if (block.hasMetadata("schematic")) {
-                Block cloneBlock = block.getBlock();
-                List<MetadataValue> metadataValues = block.getMetadata("schematic");
-                String schematic = metadataValues.get(0).asString();
-                cloneBlock.removeMetadata("schematic", plugin);
-                cloneBlock.removeMetadata("sapling", plugin);
-                cloneBlock.setType(Material.AIR);
-
-                Saplings.setSchematic(schematic, cloneBlock);
-                event.setCancelled(true);
-
-                Util.log("&aA " + schematic + " tree has grown!");
-                break;
+            if (!block.hasMetadata("schematic")) {
+                continue;
             }
+
+            List<MetadataValue> metadataValues = block.getMetadata("schematic");
+            String schematic = metadataValues.get(0).asString();
+            block.removeMetadata("schematic", plugin);
+            block.removeMetadata("sapling", plugin);
+            block.setType(Material.AIR);
+
+            Saplings.setSchematic(schematic, block.getLocation());
+            event.setCancelled(true);
+
+            Util.debugLog("&aA " + schematic + " tree has grown!");
+            break;
         }
     }
 
@@ -94,13 +95,13 @@ public class Events implements Listener {
 
         if (plugin.getConfig().getBoolean("require-permission-to-break") && !event.getPlayer().hasPermission("customsaplings.break")) {
             event.getPlayer().sendMessage(TextUtils.prefix + "You do not have permission to break this sapling!");
-            Util.log("&e" + event.getPlayer().getName() + " tried to break a sapling but did not have permission! Location: " + event.getPlayer().getLocation());
+            Util.debugLog("&e" + event.getPlayer().getName() + " tried to break a sapling but did not have permission! Location: " + event.getPlayer().getLocation());
             event.setCancelled(true);
             return;
         }
 
         block.getWorld().dropItemNaturally(block.getLocation(), sapling);
-        Util.log("&a" + event.getPlayer().getName() + " broke a " + metadataValues.get(0).asString() + " sapling!");
+        Util.debugLog("&a" + event.getPlayer().getName() + " broke a " + metadataValues.get(0).asString() + " sapling!");
 
     }
 
@@ -117,12 +118,12 @@ public class Events implements Listener {
         List<String> saplings = Saplings.getAllSaplingsOfRarity(rarity);
         if (saplings.isEmpty()) {
             event.getPlayer().sendMessage(TextUtils.prefix + "There are no saplings in this box!");
-            Util.log("&eSomeone tried to open a box with no saplings in it! Rarity: " + rarity + " Location: " + event.getPlayer().getLocation());
+            Util.debugLog("&eSomeone tried to open a box with no saplings in it! Rarity: " + rarity + " Location: " + event.getPlayer().getLocation());
         } else {
             event.getItem().setAmount(event.getItem().getAmount() - 1);
             String sapling = saplings.get(new Random().nextInt(saplings.size()));
             Util.giveItem(event.getPlayer(), Saplings.getSapling(sapling));
-            Util.log("&a" + event.getPlayer().getName() + " opened a " + rarity + " box and got a " + sapling + " sapling!");
+            Util.debugLog("&a" + event.getPlayer().getName() + " opened a " + rarity + " box and got a " + sapling + " sapling!");
 
             if (plugin.getConfig().get("rarity-boxes." + rarity + ".open-sound") != null) {
                 event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf(plugin.getConfig().getString("rarity-boxes." + rarity + ".open-sound")), 1, 1);

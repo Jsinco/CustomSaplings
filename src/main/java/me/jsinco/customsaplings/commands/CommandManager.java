@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
+
     private final CustomSaplings plugin;
     private final Map<String, SubCommand> subCommands = new HashMap<>();
 
@@ -25,19 +26,18 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         subCommands.put("give", new GiveCommand());
         subCommands.put("reload", new ReloadCommand());
         subCommands.put("box", new BoxCommand());
-        subCommands.put("verbose", new VerboseCommand());
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
-            Util.log("&a" + sender.getName() + " executed /customsaplings");
+            Util.debugLog("&a" + sender.getName() + " executed /customsaplings");
             sender.sendMessage(TextUtils.prefix + "Custom Saplings v" + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors().get(0));
             return true;
         }
 
         args[0] = args[0].toLowerCase();
-        Util.log("&a" + sender.getName() + " executed /customsaplings " + String.join(" ", args));
+        Util.debugLog("&a" + sender.getName() + " executed /customsaplings " + String.join(" ", args));
         if (!subCommands.containsKey(args[0])) {
             sender.sendMessage(TextUtils.prefix + "Unknown subcommand!");
             subCommands.get("help").execute(plugin, sender, args);
