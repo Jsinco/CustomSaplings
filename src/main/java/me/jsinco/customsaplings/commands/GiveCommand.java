@@ -1,8 +1,8 @@
 package me.jsinco.customsaplings.commands;
 
 import me.jsinco.customsaplings.CustomSaplings;
-import me.jsinco.customsaplings.FileManager;
-import me.jsinco.customsaplings.Saplings;
+import me.jsinco.customsaplings.manager.FileManager;
+import me.jsinco.customsaplings.manager.SaplingsManager;
 import me.jsinco.customsaplings.util.TextUtils;
 import me.jsinco.customsaplings.util.Util;
 import org.bukkit.Bukkit;
@@ -24,7 +24,7 @@ public class GiveCommand implements SubCommand {
             return;
         }
 
-        ItemStack sapling = Saplings.getSapling(args[1]);
+        ItemStack sapling = SaplingsManager.getSaplingItem(args[1]);
         Player deliverTo = args.length == 2 && sender instanceof Player ? (Player) sender : Bukkit.getPlayerExact(args[2]);
         if (sapling == null) {
             sender.sendMessage(TextUtils.prefix + "That sapling does not exist!");

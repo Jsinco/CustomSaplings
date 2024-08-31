@@ -1,5 +1,6 @@
-package me.jsinco.customsaplings;
+package me.jsinco.customsaplings.manager;
 
+import me.jsinco.customsaplings.CustomSaplings;
 import me.jsinco.customsaplings.configupdater.ConfigUpdater;
 import org.bukkit.configuration.file.YamlConfiguration;
 

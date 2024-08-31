@@ -40,7 +40,7 @@ bigtree:
   rarity-box: rare
   schematic: 'bigtree.schem'
 
-random_tree:
+randomtree:
   material: OAK_SAPLING
   name: '&#a8ff92&lRandom Tree &#E2E2E2Sapling'
   lore: ['&7This is one big tree!']

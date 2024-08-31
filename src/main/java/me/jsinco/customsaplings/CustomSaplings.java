@@ -2,6 +2,8 @@ package me.jsinco.customsaplings;
 
 import me.jsinco.customsaplings.commands.CommandManager;
 import me.jsinco.customsaplings.listeners.Events;
+import me.jsinco.customsaplings.manager.FileManager;
+import me.jsinco.customsaplings.manager.SaplingsManager;
 import me.jsinco.customsaplings.util.Util;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +37,7 @@ public final class CustomSaplings extends JavaPlugin {
         // Register commands and events
         getCommand("customsaplings").setExecutor(new CommandManager(this));
         getServer().getPluginManager().registerEvents(new Events(this), this);
+        SaplingsManager.reloadSaplingContainers();
         Util.log("&aEnabled Custom Saplings v" + getDescription().getVersion());
     }
 

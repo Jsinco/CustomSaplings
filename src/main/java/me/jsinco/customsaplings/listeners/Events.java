@@ -1,7 +1,7 @@
 package me.jsinco.customsaplings.listeners;
 
 import me.jsinco.customsaplings.CustomSaplings;
-import me.jsinco.customsaplings.Saplings;
+import me.jsinco.customsaplings.manager.SaplingsManager;
 import me.jsinco.customsaplings.util.TextUtils;
 import me.jsinco.customsaplings.util.Util;
 import org.bukkit.Material;
@@ -10,10 +10,12 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,11 +34,19 @@ public class Events implements Listener {
         this.plugin = plugin;
     }
 
+    // Disable leaf decay
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onLeafDecay(LeavesDecayEvent event) {
+        if (plugin.getConfig().getBoolean("disable-leaf-decay")) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
 
-        if (!item.hasItemMeta() || !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING)) {
+        if (!item.hasItemMeta() || !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING)) {
             return; // Not a custom sapling
         }
 
@@ -46,9 +56,9 @@ public class Events implements Listener {
             return;
         }
 
-        String schematic = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING);
+        //String schematic = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING);
         String sapling = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING);
-        event.getBlockPlaced().setMetadata("schematic", new FixedMetadataValue(plugin, schematic));
+        //event.getBlockPlaced().setMetadata("schematic", new FixedMetadataValue(plugin, schematic));
         event.getBlockPlaced().setMetadata("sapling", new FixedMetadataValue(plugin, sapling));
         Util.debugLog("&a" + event.getPlayer().getName() + " placed a " + sapling + " sapling!");
     }
@@ -57,18 +67,21 @@ public class Events implements Listener {
     public void onStructureGrow(StructureGrowEvent event) {
         List<BlockState> blocks = event.getBlocks();
 
-        for (BlockState block : blocks) {
-            if (!block.hasMetadata("schematic")) {
+        for (BlockState blockState : blocks) {
+            if (!blockState.hasMetadata("sapling")) {
                 continue;
             }
-
-            List<MetadataValue> metadataValues = block.getMetadata("schematic");
-            String schematic = metadataValues.get(0).asString();
-            block.removeMetadata("schematic", plugin);
+            Block block = blockState.getBlock();
+            String sapling = block.getMetadata("sapling").get(0).asString();
+            String schematic = SaplingsManager.getSaplingSchematic(sapling);
+            if (schematic == null) {
+                Util.debugLog("&cCould not find schematic for sapling! " + sapling);
+                return;
+            }
             block.removeMetadata("sapling", plugin);
             block.setType(Material.AIR);
 
-            Saplings.setSchematic(schematic, block.getLocation());
+            SaplingsManager.setSchematic(schematic, block.getLocation());
             event.setCancelled(true);
 
             Util.debugLog("&aA " + schematic + " tree has grown!");
@@ -85,11 +98,11 @@ public class Events implements Listener {
             return; // Drop sapling is disabled
         }
         List<MetadataValue> metadataValues = block.getMetadata("sapling");
-        ItemStack sapling = Saplings.getSapling(metadataValues.get(0).asString());
+        ItemStack sapling = SaplingsManager.getSaplingItem(metadataValues.get(0).asString());
         if (sapling == null) return;
         else if (!block.getType().equals(sapling.getType())) {
             block.removeMetadata("sapling", plugin);
-            block.removeMetadata("schematic", plugin);
+            //block.removeMetadata("schematic", plugin);
             return; // Should never happen, but to prevent any possible exploits
         }
 
@@ -115,14 +128,14 @@ public class Events implements Listener {
         }
 
         String rarity = event.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "box"), PersistentDataType.STRING);
-        List<String> saplings = Saplings.getAllSaplingsOfRarity(rarity);
+        List<String> saplings = SaplingsManager.getAllSaplingsOfRarity(rarity);
         if (saplings.isEmpty()) {
             event.getPlayer().sendMessage(TextUtils.prefix + "There are no saplings in this box!");
             Util.debugLog("&eSomeone tried to open a box with no saplings in it! Rarity: " + rarity + " Location: " + event.getPlayer().getLocation());
         } else {
             event.getItem().setAmount(event.getItem().getAmount() - 1);
             String sapling = saplings.get(new Random().nextInt(saplings.size()));
-            Util.giveItem(event.getPlayer(), Saplings.getSapling(sapling));
+            Util.giveItem(event.getPlayer(), SaplingsManager.getSaplingItem(sapling));
             Util.debugLog("&a" + event.getPlayer().getName() + " opened a " + rarity + " box and got a " + sapling + " sapling!");
 
             if (plugin.getConfig().get("rarity-boxes." + rarity + ".open-sound") != null) {

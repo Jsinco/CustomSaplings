@@ -1,7 +1,7 @@
 package me.jsinco.customsaplings.commands;
 
 import me.jsinco.customsaplings.CustomSaplings;
-import me.jsinco.customsaplings.Saplings;
+import me.jsinco.customsaplings.manager.SaplingsManager;
 import me.jsinco.customsaplings.util.TextUtils;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class PasteCommand implements SubCommand  {
             player.sendMessage(TextUtils.prefix + "You must be looking at a block!");
 
         } else {
-            Saplings.setSchematic(args[1], block);
+            SaplingsManager.setSchematic(args[1], block.getLocation());
             player.sendMessage(TextUtils.prefix + "Schematic set!");
         }
     }

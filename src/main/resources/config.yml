@@ -23,6 +23,10 @@ search-worldedit-schematics-folder: true
 # Show logs in console for when the plugin does something, usually you can just leave this off
 verbose-logging: false
 
+# This will GLOBALLY disable leaf decay.
+# This is just for convenience, so you don't have to install another plugin to disable leaf decay.
+# You should really be taking schematics of trees that have leaf decay already disabled.
+disable-leaf-decay: false
 
 
 # example-rarity:

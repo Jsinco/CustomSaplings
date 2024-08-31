@@ -48,14 +48,14 @@ public class KeyBuilder implements Cloneable {
     }
 
     public String getLastKey() {
-        if (builder.length() == 0)
+        if (builder.isEmpty())
             return "";
 
         return builder.toString().split("[" + separator + "]")[0];
     }
 
     public boolean isEmpty() {
-        return builder.length() == 0;
+        return builder.isEmpty();
     }
     public void clear() {
         builder.setLength(0);

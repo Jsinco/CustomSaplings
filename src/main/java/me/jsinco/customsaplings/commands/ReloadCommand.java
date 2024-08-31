@@ -1,7 +1,8 @@
 package me.jsinco.customsaplings.commands;
 
 import me.jsinco.customsaplings.CustomSaplings;
-import me.jsinco.customsaplings.FileManager;
+import me.jsinco.customsaplings.manager.FileManager;
+import me.jsinco.customsaplings.manager.SaplingsManager;
 import me.jsinco.customsaplings.util.TextUtils;
 import org.bukkit.command.CommandSender;
 
@@ -20,6 +21,7 @@ public class ReloadCommand implements SubCommand {
         fileManager.loadSchematicFiles();
         fileManager.loadSaplingsFile();
         fileManager.loadDefaultConfig(true);
+        SaplingsManager.reloadSaplingContainers();
         TextUtils.reloadTextUtils();
 
         sender.sendMessage(TextUtils.prefix + "Reloaded!");
