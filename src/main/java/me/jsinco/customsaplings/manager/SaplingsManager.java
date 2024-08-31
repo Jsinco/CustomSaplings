@@ -60,13 +60,7 @@ public final class SaplingsManager {
             String rarityBox = saplingSection.getString("rarity-box", null);
 
 
-            if (saplingSection.get("schematic") == null) {
-                Util.log("&cCould not find schematic for sapling " + saplingSectionName + "!");
-                continue;
-            }
-
             if (saplingSection.get("schematic") instanceof Collection<?>) {
-                System.out.println("loading multischem " + saplingSection.getStringList("schematic"));
                 saplingContainers.put(saplingSectionName, new MultiSaplingContainer(material, name, lore, enchantGlint, customModelData, rarityBox, saplingSectionName, saplingSection.getStringList("schematic")));
             } else {
                 saplingContainers.put(saplingSectionName, new SingleSaplingContainer(material, name, lore, enchantGlint, customModelData, rarityBox, saplingSectionName, saplingSection.getString("schematic")));
