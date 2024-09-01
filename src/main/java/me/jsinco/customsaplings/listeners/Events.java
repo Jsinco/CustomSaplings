@@ -28,10 +28,12 @@ import java.util.Random;
 
 public class Events implements Listener {
 
+    private final NamespacedKey saplingKey;
     private final CustomSaplings plugin;
 
     public Events(CustomSaplings plugin) {
         this.plugin = plugin;
+        this.saplingKey = new NamespacedKey(plugin, "sapling");
     }
 
     // Disable leaf decay
@@ -42,11 +44,11 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
 
-        if (!item.hasItemMeta() || !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING)) {
+        if (!item.hasItemMeta() || !item.getItemMeta().getPersistentDataContainer().has(saplingKey, PersistentDataType.STRING)) {
             return; // Not a custom sapling
         }
 
@@ -56,14 +58,13 @@ public class Events implements Listener {
             return;
         }
 
-        //String schematic = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "schematic"), PersistentDataType.STRING);
+
         String sapling = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "sapling"), PersistentDataType.STRING);
-        //event.getBlockPlaced().setMetadata("schematic", new FixedMetadataValue(plugin, schematic));
         event.getBlockPlaced().setMetadata("sapling", new FixedMetadataValue(plugin, sapling));
         Util.debugLog("&a" + event.getPlayer().getName() + " placed a " + sapling + " sapling!");
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         List<BlockState> blocks = event.getBlocks();
 
@@ -89,7 +90,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         if (!block.hasMetadata("sapling")) {
@@ -102,7 +103,6 @@ public class Events implements Listener {
         if (sapling == null) return;
         else if (!block.getType().equals(sapling.getType())) {
             block.removeMetadata("sapling", plugin);
-            //block.removeMetadata("schematic", plugin);
             return; // Should never happen, but to prevent any possible exploits
         }
 
@@ -118,7 +118,7 @@ public class Events implements Listener {
 
     }
 
-    @EventHandler // For custom sapling boxes
+    @EventHandler(ignoreCancelled = true) // For custom sapling boxes
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 

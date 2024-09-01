@@ -38,7 +38,6 @@ public final class SaplingsManager {
     private static final Map<String, SaplingContainer> saplingContainers = new HashMap<>();
 
     private static final CustomSaplings plugin = CustomSaplings.getInstance();
-    //private static final NamespacedKey schematicKey = new NamespacedKey(plugin, "schematic");
     private static final NamespacedKey saplingKey = new NamespacedKey(plugin, "sapling");
 
 
@@ -92,9 +91,10 @@ public final class SaplingsManager {
         ItemStack sapling = new ItemStack(saplingContainer.material());
         ItemMeta meta = sapling.getItemMeta();
         meta.setDisplayName(TextUtils.colorcode(saplingContainer.name()));
-        meta.setLore(TextUtils.colorArrayList(saplingContainer.lore()));
+        if (!saplingContainer.lore().isEmpty()) {
+            meta.setLore(TextUtils.colorArrayList(saplingContainer.lore()));
+        }
         meta.getPersistentDataContainer().set(saplingKey, PersistentDataType.STRING, saplingContainer.getId());
-        //meta.getPersistentDataContainer().set(schematicKey, PersistentDataType.STRING, saplingContainer.getSchematic());
 
         if (saplingContainer.enchantGlint()) {
             meta.addEnchant(Enchantment.LUCK, 1, true);
