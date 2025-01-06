@@ -113,9 +113,9 @@ public class Events implements Listener {
             return;
         }
 
+        event.setDropItems(false);
         block.getWorld().dropItemNaturally(block.getLocation(), sapling);
         Util.debugLog("&a" + event.getPlayer().getName() + " broke a " + metadataValues.get(0).asString() + " sapling!");
-
     }
 
     @EventHandler(ignoreCancelled = true) // For custom sapling boxes
