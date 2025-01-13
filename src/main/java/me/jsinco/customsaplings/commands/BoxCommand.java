@@ -1,7 +1,11 @@
 package me.jsinco.customsaplings.commands;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import me.jsinco.customsaplings.CustomSaplings;
 import me.jsinco.customsaplings.util.TextUtils;
+import me.jsinco.customsaplings.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -14,8 +18,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
+import java.util.UUID;
 
 public class BoxCommand implements SubCommand {
+
+    private static final UUID uuid = UUID.fromString("f1461958-c3f4-4d0c-bca7-618f746ee800");
 
     @Override
     public void execute(CustomSaplings plugin, CommandSender sender, String[] args) {
@@ -29,40 +36,34 @@ public class BoxCommand implements SubCommand {
 
         String boxName = args[1];
         ItemStack boxItem = new ItemStack(Material.valueOf(plugin.getConfig().getString("rarity-boxes." + boxName + ".material").toUpperCase()));
-        if (boxItem.getType().equals(Material.PLAYER_HEAD)) {
-            SkullMeta skullMeta = (SkullMeta) boxItem.getItemMeta();
 
+        ItemMeta meta = boxItem.getItemMeta();
+
+        if (plugin.getConfig().get("rarity-boxes." + boxName + ".enchant-glint") != null && plugin.getConfig().getBoolean("rarity-boxes." + boxName + ".enchant-glint")) {
+            meta.addEnchant(Enchantment.MENDING, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        meta.setDisplayName(TextUtils.colorcode(plugin.getConfig().getString("rarity-boxes." + boxName + ".name")));
+        meta.setLore(TextUtils.colorArrayList(plugin.getConfig().getStringList("rarity-boxes." + boxName + ".lore")));
+        meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "box"), PersistentDataType.STRING, boxName);
+
+        if (meta instanceof SkullMeta skullMeta) {
             String data = plugin.getConfig().getString("rarity-boxes." + boxName + ".data");
             if (data != null) {
-                skullMeta.setOwner(data);
+                PlayerProfile profile = Bukkit.createProfile(uuid);
+                profile.setProperty(new ProfileProperty("textures", data));
+                skullMeta.setPlayerProfile(profile);
             }
-            if (plugin.getConfig().get("rarity-boxes." + boxName + ".enchant-glint") != null && plugin.getConfig().getBoolean("rarity-boxes." + boxName + ".enchant-glint")) {
-                skullMeta.addEnchant(Enchantment.LUCK, 1, true);
-                skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
-            skullMeta.setDisplayName(TextUtils.colorcode(plugin.getConfig().getString("rarity-boxes." + boxName + ".name")));
-            skullMeta.setLore(TextUtils.colorArrayList(plugin.getConfig().getStringList("rarity-boxes." + boxName + ".lore")));
-            skullMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "box"), PersistentDataType.STRING, boxName);
-            boxItem.setItemMeta(skullMeta);
         } else {
-            ItemMeta meta = boxItem.getItemMeta();
             int data = plugin.getConfig().getInt("rarity-boxes." + boxName + ".data");
             if (data != 0) {
                 meta.setCustomModelData(data);
             }
-            if (plugin.getConfig().get("rarity-boxes." + boxName + ".enchant-glint") != null && plugin.getConfig().getBoolean("rarity-boxes." + boxName + ".enchant-glint")) {
-                meta.addEnchant(Enchantment.LUCK, 1, true);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
-            meta.setDisplayName(TextUtils.colorcode(plugin.getConfig().getString("rarity-boxes." + boxName + ".name")));
-            meta.setLore(TextUtils.colorArrayList(plugin.getConfig().getStringList("rarity-boxes." + boxName + ".lore")));
-            meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "box"), PersistentDataType.STRING, boxName);
-            boxItem.setItemMeta(meta);
         }
 
-        player.getInventory().addItem(boxItem);
+        boxItem.setItemMeta(meta);
+        Util.giveItem(player, boxItem);
     }
 
     @Override

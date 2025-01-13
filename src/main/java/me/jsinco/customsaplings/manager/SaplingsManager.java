@@ -97,7 +97,7 @@ public final class SaplingsManager {
         meta.getPersistentDataContainer().set(saplingKey, PersistentDataType.STRING, saplingContainer.getId());
 
         if (saplingContainer.enchantGlint()) {
-            meta.addEnchant(Enchantment.LUCK, 1, true);
+            meta.addEnchant(Enchantment.MENDING, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
