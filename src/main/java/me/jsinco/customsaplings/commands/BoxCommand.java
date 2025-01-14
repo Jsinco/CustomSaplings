@@ -26,15 +26,22 @@ public class BoxCommand implements SubCommand {
 
     @Override
     public void execute(CustomSaplings plugin, CommandSender sender, String[] args) {
-        if (!sender.hasPermission("customsaplings.boxcommand") || !(sender instanceof Player player)) {
+        if (!sender.hasPermission("customsaplings.boxcommand")) {
             sender.sendMessage(TextUtils.prefix + "You do not have permission to use this command!");
             return;
-        } else if (args.length < 2) {
-            sender.sendMessage(TextUtils.prefix + "You must specify a sapling box name!");
+        } else if (args.length < 3) {
+            sender.sendMessage(TextUtils.prefix + "/customsaplings box <rarity> <player>");
             return;
         }
 
         String boxName = args[1];
+        Player player = Bukkit.getPlayerExact(args[2]);
+        if (player == null) {
+            sender.sendMessage(TextUtils.prefix + "That player is not online!");
+            return;
+        }
+
+
         ItemStack boxItem = new ItemStack(Material.valueOf(plugin.getConfig().getString("rarity-boxes." + boxName + ".material").toUpperCase()));
 
         ItemMeta meta = boxItem.getItemMeta();
